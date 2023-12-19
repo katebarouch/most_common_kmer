@@ -53,3 +53,20 @@ def Consensus(Motifs):
         consensus += frequentSymbol
         
     return consensus
+
+# Input:  A set of k-mers Motifs
+# Output: The score of these k-mers.
+def Score(Motifs):
+    t = len(Motifs)
+    k = len(Motifs[0])
+    count = Count(Motifs)
+    consensus = Consensus(Motifs)
+    
+    score = 0 
+    for i in range(t):
+        for j in range(k):
+            symbol = Motifs[i][j]
+            if symbol != consensus[j]:
+                score += 1
+                
+    return score
