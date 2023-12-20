@@ -1,40 +1,41 @@
+#pseudocount motif search
+
 # Input:  A set of kmers Motifs
-# Output: Count(Motifs)
-def Count(Motifs):
+# Output: ProfileWithPseudocounts(Motifs)
+def ProfileWithPseudocounts(Motifs):
+    t = len(Motifs) + 4
+    k = len(Motifs[0])
+    profile = {} # output variable
+    
+    count = CountWithPseudocounts(Motifs)
+    
+    for symbol in "ACGT":
+        profile[symbol] = []
+        for j in range(k):
+            profile[symbol].append(count[symbol][j] / t)
+        
+    return profile
+
+
+# Input:  A set of kmers Motifs
+# Output: CountWithPseudocounts(Motifs)
+# HINT:   You need to use CountWithPseudocounts as a subroutine of ProfileWithPseudocounts
+def CountWithPseudocounts(Motifs):
     count = {} # initializing the count dictionary
     
     k = len(Motifs[0])
     for symbol in "ACGT":
         count[symbol] = []
         for j in range(k):
-             count[symbol].append(0)
+             count[symbol].append(1)
                 
     t = len(Motifs)
     for i in range(t):
         for j in range(k):
             symbol = Motifs[i][j]
             count[symbol][j] += 1
-                
+            
     return count
-
-# Input:  A list of kmers Motifs
-# Output: the profile matrix of Motifs, as a dictionary of lists.
-def Profile(Motifs):
-    t = len(Motifs)
-    k = len(Motifs[0])
-    profile = {}
-    
-    for symbol in "ACGT":
-        profile[symbol] = []
-        for j in range(k):
-             profile[symbol].append(0)
-                
-    for i in range(t):
-        for j in range(k):
-            symbol = Motifs[i][j]
-            profile[symbol][j] += 1 / t
-        
-    return profile
 
 # Input:  A set of kmers Motifs
 # Output: A consensus string of Motifs.
@@ -71,10 +72,6 @@ def Score(Motifs):
                 
     return score
 
-# Profile-most Probable k-mer Problem: Find a Profile-most probable k-mer in a string.
-# Input: A string Text, an integer k, and a 4 x k matrix Profile.
-# Output: A Profile-most probable k-mer in Text.
-
 # Input:  String Text and profile matrix Profile
 # Output: Pr(Text, Profile)
 def Pr(Text, Profile):
@@ -101,10 +98,9 @@ def ProfileMostProbableKmer(text, k, profile):
             most_probable_kmer = kmer
     return most_probable_kmer
 
-# Input:  A list of kmers Dna, and integers k and t (where t is the number of kmers in Dna)
-# Output: GreedyMotifSearch(Dna, k, t)
-def GreedyMotifSearch(Dna, k, t):
-    BestMotifs = []
+def GreedyMotifSearchWithPseudocounts(Dna, k, t):
+    BestMotifs = [] # output variable
+
     for i in range(0, t):
         BestMotifs.append(Dna[i][0:k])
     
@@ -113,10 +109,9 @@ def GreedyMotifSearch(Dna, k, t):
         Motifs = []
         Motifs.append(Dna[0][i:i+k])
         for j in range(1, t):
-            P = Profile(Motifs[0:j])
+            P = ProfileWithPseudocounts(Motifs[0:j])
             Motifs.append(ProfileMostProbableKmer(Dna[j], k, P))
             
         if Score(Motifs) < Score(BestMotifs):
             BestMotifs = Motifs
     return BestMotifs
-
