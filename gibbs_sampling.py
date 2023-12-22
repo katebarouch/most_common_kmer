@@ -1,6 +1,5 @@
-# Gibbs Sampling
-
 import random
+
 # Input:  Integers k, t, and N, followed by a collection of strings Dna
 # Output: GibbsSampler(Dna, k, t, N)
 def GibbsSampler(Dna, k, t, N):
@@ -17,12 +16,6 @@ def GibbsSampler(Dna, k, t, N):
     
     return BestMotifs 
 
-# Input: A dictionary Probabilities, where keys are k-mers and values are the probabilities of these k-mers (which do not necessarily sum up to 1)
-# Output: A normalized dictionary where the probability of each k-mer was divided by the sum of all k-mers' probabilities
-
-#randomized motif search
-import random
-
 # Input:  Positive integers k and t, followed by a list of strings Dna
 # Output: RandomizedMotifSearch(Dna, k, t)
 def RandomizedMotifSearch(Dna, k, t):
@@ -36,10 +29,6 @@ def RandomizedMotifSearch(Dna, k, t):
             BestMotifs = M
         else:
             return BestMotifs 
-
-
-# Insert necessary subroutines here, including RandomMotifs(), ProfileWithPseudocounts(), Motifs(), Score(),
-# and any subroutines that these functions need.
 
 # Input:  A list of strings Dna, and integers k and t
 # Output: RandomMotifs(Dna, k, t)
@@ -100,7 +89,7 @@ def CountWithPseudocounts(Motifs):
     return count
 
 def Count(Motifs):
-    count = {} # initializing the count dictionary
+    count = {} 
     
     k = len(Motifs[0])
     for symbol in "ACGT":
